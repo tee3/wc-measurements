@@ -1,0 +1,34 @@
+import testing ;
+
+project
+  : requirements
+     <cxxflags>-std=c++14
+  ;
+
+lib libwc
+  : # sources
+
+    wc.hpp
+
+    wc_cstdio_fgetc.cpp
+    wc_cstdio_fread.cpp
+    wc_iostream_operator.cpp
+    wc_iostream_read.cpp
+    wc_os_mmap.cpp
+    wc_os_read.cpp
+
+  ;
+
+exe wc_measurements : wc_measurements.cpp libwc ;
+
+explicit test ;
+alias test
+  : # sources
+     wc_measurements_many
+     wc_measurements_one
+  ;
+
+explicit wc_measurements_many ;
+run wc_measurements : data/files/A*.txt : : : wc_measurements_many ;
+explicit wc_measurements_one ;
+run wc_measurements : data/onefile.txt : : : wc_measurements_one ;
